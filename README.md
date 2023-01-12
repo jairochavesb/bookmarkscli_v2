@@ -17,6 +17,8 @@ The idea is to be able to have more flexible options to search the bookmarks, bu
    a. Which web browser to use (use the full path: /usr/bin/firefox) to open the bookmarks.
    b. Where to store the bookmarks database (same as the web browser option, provide a full path and name for the databse, for example: /home/user/bookmarks.db). This preferences are stored in a file un /home/<user_name>/.config/bookmarks.cfg.
 
+This tool was made with the library: https://github.com/VladimirMarkelov/clui 
+
 ## Here some screenshots
 
 <img src="Pictures/mainWindow.png">

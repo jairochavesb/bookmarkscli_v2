@@ -61,7 +61,8 @@ func initUI(bookmarksPrefs *misc.BookmarksPreferences) {
 
 	menu1 := "<t: cyan bold>F1: <t: white bold>New\t\t\t<f: cyan bold>F2:<t: white bold> Edit\t\t\t"
 	menu1 += "<f: cyan bold>F3:<t: white bold> Search\t\t\t<f: cyan bold>F4:<t: white bold> Delete\t\t\t<f: cyan bold>F5:<t: white bold> Exit"
-	menu1 += strings.Repeat(" ", 80)
+	dbNameLen := len(bookmarksPrefs.Database)
+	menu1 += strings.Repeat(" ", 80-dbNameLen)
 	menu1 += "<t: cyan bold>Using Database: <t: white bold>" + bookmarksPrefs.Database
 
 	_ = ui.CreateLabel(mainWindow, winSize.windowWidth, 1, menu1, ui.Fixed)

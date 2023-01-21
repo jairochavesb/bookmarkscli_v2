@@ -157,13 +157,15 @@ func newBookmark(winSize *WindowSize, database string) {
 
 	editFieldURL.OnKeyPress(func(key termbox.Key, r rune) bool {
 		if key == termbox.KeyF1 {
-			returnValue := db.InsertIntoDB(editFieldName.Title(), editFieldTags.Title(), editFieldURL.Title(), database)
-			lblStatus.SetTitle(returnValue)
+			if editFieldName.Title() == "" || editFieldTags.Title() == "" || editFieldURL.Title() == "" {
+				lblStatus.SetTitle("Do not leave text fields empty.")
+			} else {
+				returnValue := db.InsertIntoDB(editFieldName.Title(), editFieldTags.Title(), editFieldURL.Title(), database)
+				lblStatus.SetTitle(returnValue)
+			}
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 			lblStatus.SetTitle("")
 
 		} else if key == termbox.KeyF3 {
@@ -175,13 +177,15 @@ func newBookmark(winSize *WindowSize, database string) {
 
 	editFieldName.OnKeyPress(func(key termbox.Key, r rune) bool {
 		if key == termbox.KeyF1 {
-			returnValue := db.InsertIntoDB(editFieldName.Title(), editFieldTags.Title(), editFieldURL.Title(), database)
-			lblStatus.SetTitle(returnValue)
+			if editFieldName.Title() == "" || editFieldTags.Title() == "" || editFieldURL.Title() == "" {
+				lblStatus.SetTitle("Do not leave text fields empty.")
+			} else {
+				returnValue := db.InsertIntoDB(editFieldName.Title(), editFieldTags.Title(), editFieldURL.Title(), database)
+				lblStatus.SetTitle(returnValue)
+			}
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 			lblStatus.SetTitle("")
 
 		} else if key == termbox.KeyF3 {
@@ -193,13 +197,15 @@ func newBookmark(winSize *WindowSize, database string) {
 
 	editFieldTags.OnKeyPress(func(key termbox.Key, r rune) bool {
 		if key == termbox.KeyF1 {
-			returnValue := db.InsertIntoDB(editFieldName.Title(), editFieldTags.Title(), editFieldURL.Title(), database)
-			lblStatus.SetTitle(returnValue)
+			if editFieldName.Title() == "" || editFieldTags.Title() == "" || editFieldURL.Title() == "" {
+				lblStatus.SetTitle("Do not leave text fields empty.")
+			} else {
+				returnValue := db.InsertIntoDB(editFieldName.Title(), editFieldTags.Title(), editFieldURL.Title(), database)
+				lblStatus.SetTitle(returnValue)
+			}
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 			lblStatus.SetTitle("")
 
 		} else if key == termbox.KeyF3 {
@@ -265,9 +271,7 @@ func editBookmark(winSize *WindowSize, database, listboxText string) {
 			lblStatus.SetTitle(returnValue)
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 			lblStatus.SetTitle("")
 
 		} else if key == termbox.KeyF3 {
@@ -283,9 +287,7 @@ func editBookmark(winSize *WindowSize, database, listboxText string) {
 			lblStatus.SetTitle(returnValue)
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 			lblStatus.SetTitle("")
 
 		} else if key == termbox.KeyF3 {
@@ -301,9 +303,7 @@ func editBookmark(winSize *WindowSize, database, listboxText string) {
 			lblStatus.SetTitle(returnValue)
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 			lblStatus.SetTitle("")
 
 		} else if key == termbox.KeyF3 {
@@ -355,9 +355,7 @@ func searchBookmark(winSize *WindowSize, listbox *ui.ListBox, database string) {
 			db.SearchBookmark(listbox, "url", editFieldURL.Title(), database)
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 
 		} else if key == termbox.KeyF3 {
 			ui.PutEvent(ui.Event{Type: ui.EventCloseWindow})
@@ -371,9 +369,7 @@ func searchBookmark(winSize *WindowSize, listbox *ui.ListBox, database string) {
 			db.SearchBookmark(listbox, "name", editFieldName.Title(), database)
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 
 		} else if key == termbox.KeyF3 {
 			ui.PutEvent(ui.Event{Type: ui.EventCloseWindow})
@@ -387,9 +383,7 @@ func searchBookmark(winSize *WindowSize, listbox *ui.ListBox, database string) {
 			db.SearchBookmark(listbox, "tags", editFieldTags.Title(), database)
 
 		} else if key == termbox.KeyF2 {
-			editFieldName.SetTitle("")
-			editFieldTags.SetTitle("")
-			editFieldURL.SetTitle("")
+			clearEditFields(editFieldName, editFieldTags, editFieldURL)
 
 		} else if key == termbox.KeyF3 {
 			ui.PutEvent(ui.Event{Type: ui.EventCloseWindow})
@@ -407,4 +401,10 @@ func showWelcomeMessage(listbox *ui.ListBox) {
 	listbox.AddItem("██ ███ ██ ██      ██      ██      ██    ██ ██  ██  ██ ██     ")
 	listbox.AddItem(" ███ ███  ███████ ███████  ██████  ██████  ██      ██ ███████")
 	listbox.AddItem("")
+}
+
+func clearEditFields(name *ui.EditField, tags *ui.EditField, url *ui.EditField) {
+	name.SetTitle("")
+	url.SetTitle("")
+	tags.SetTitle("")
 }

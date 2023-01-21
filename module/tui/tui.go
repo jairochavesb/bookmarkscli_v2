@@ -118,7 +118,7 @@ func initUI(bookmarksPrefs *misc.BookmarksPreferences) {
 
 func newBookmark(winSize *WindowSize, database string) {
 
-	menu1 := "<f: cyan bold> F1:<t: white bold> Save\t\t\t<t: cyan bold>F2: <t: white bold>Clear Fields\t\t\t"
+	menu1 := "<f: cyan bold> F1:<t: white bold> Save\t\t\t<t: cyan bold>F2: <t: white bold>Clear\t\t\t"
 	menu1 += "<f: cyan bold>F3:<t: white bold> Cancel"
 
 	mainWindow := ui.AddWindow(winSize.windowX, winSize.windowY, winSize.windowWidth, winSize.windowHeight, "")

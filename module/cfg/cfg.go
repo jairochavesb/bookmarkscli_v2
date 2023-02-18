@@ -9,13 +9,20 @@ import (
 	"strings"
 )
 
-func LoadConfig(cfgDir string) *misc.BookmarksPreferences {
-	_, err := os.Stat(cfgDir)
+func LoadConfig() *misc.BookmarksPreferences {
+	userHomeDir, err := os.UserHomeDir()
 	if err != nil {
-		SetConfig(cfgDir)
+		log.Fatal(err.Error())
 	}
 
-	data, err := os.Open(cfgDir)
+	configFile := userHomeDir + "/.config/bookmarks.cfg"
+
+	_, err = os.Stat(configFile)
+	if err != nil {
+		SetConfig(configFile)
+	}
+
+	data, err := os.Open(configFile)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -36,27 +43,74 @@ func LoadConfig(cfgDir string) *misc.BookmarksPreferences {
 	return &bookmarksPref
 }
 
-func SetConfig(cfgDir string) {
-	fmt.Println("Please asnwer the following questions.")
+func SetConfig(configFile string) {
+	fmt.Printf("Please asnwer the following questions.\n")
 
-	fmt.Println("Favorite web browser to open bookmarks: ")
-	webBrowser := ""
-	fmt.Scanln(&webBrowser)
+	webBrowser := getBrowserName()
 
-	fmt.Println("Where to place the bookmarks database: ")
-	bookmarksDb := ""
-	fmt.Scanln(&bookmarksDb)
+	bookmarksDbDir := getDatabaseDir()
 
-	fd, err := os.Create(cfgDir)
+	bookmarksDbname := ""
+	fmt.Println("How to name the bookmarks db file, leave this blank to use default name 'bookmarks.db'")
+	fmt.Scanln(&bookmarksDbname)
+
+	if bookmarksDbname == "" {
+		bookmarksDbname = "bookmarks.db"
+	}
+
+	bookmarksdb := bookmarksDbDir + bookmarksDbname
+
+	fd, err := os.Create(configFile)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	configText := "browser=" + webBrowser + "\ndatabase=" + bookmarksDb + "\n"
+	configText := "browser=" + webBrowser + "\ndatabase=" + bookmarksdb + "\n"
 
 	_, err = fd.Write([]byte(configText))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+}
 
+func getBrowserName() string {
+	browser := ""
+
+	for {
+		fmt.Println("Favorite web browser to open bookmarks: ")
+		fmt.Scanln(&browser)
+
+		_, err := os.Stat(browser)
+		if err != nil {
+			fmt.Println("Web browser path do not exist. Try again.")
+			continue
+		} else {
+			break
+		}
+	}
+
+	return browser
+}
+
+func getDatabaseDir() string {
+	databaseDir := ""
+
+	for {
+		fmt.Println("Where to place the bookmarks database: ")
+		fmt.Scanln(&databaseDir)
+
+		_, err := os.Stat(databaseDir)
+		if err != nil {
+			fmt.Println("Directory do not exist. Try again.")
+			continue
+		} else {
+			break
+		}
+	}
+
+	if databaseDir[len(databaseDir)-1] != '/' {
+		databaseDir += "/"
+	}
+
+	return databaseDir
 }

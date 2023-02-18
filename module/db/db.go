@@ -163,10 +163,6 @@ func UpdateBookmark(id, name, tags, url, database string) string {
 func InsertIntoDB(name string, tags string, url string, database string) string {
 	q := "SELECT COUNT(url) FROM bookmarks WHERE url=\"" + url + "\";"
 
-	name = removeBadChars(name)
-	url = removeBadChars(url)
-	tags = removeBadChars(tags)
-
 	sqlDB, err := sql.Open("sqlite3", database)
 	if err != nil {
 		return err.Error()
@@ -239,18 +235,4 @@ func CreateDatabase(database string) {
 
 	statement.Exec()
 	defer sqlDB.Close()
-}
-
-func removeBadChars(textString string) string {
-	cleanString := ""
-
-	for _, c := range textString {
-		if c == '%' || c == '\'' || c == '@' || c == '#' {
-			continue
-		} else {
-			cleanString += string(c)
-		}
-	}
-
-	return cleanString
 }
